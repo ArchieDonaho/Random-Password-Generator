@@ -52,7 +52,7 @@ function generatePassword() {
   var promptLength = window.prompt('How long will your password be? (8-128 characters)');
   //converts promptLength into a number
   promptLength = parseInt(promptLength);
-  console.log(promptLength);
+  console.log('the prompt length is ' + promptLength);
   //sets variable for the while loop
   var istrue = true;
   //checks if promptLength is a number between 8 & 128. if not, it will prompt the user to re-enter the data
@@ -65,7 +65,6 @@ function generatePassword() {
       window.alert('Please use a whole number between 8-128');
       promptLength = window.prompt('How long will your password be? (8-128 characters)');
       promptLength = parseInt(promptLength);
-      console.log(promptLength);
     }
   }
 
@@ -77,21 +76,48 @@ function generatePassword() {
 
   //initialize password array using the promptLength as the length of the index
   var password = new Array(promptLength);
+  console.log('password length is ' + password.length);
 
-  //now with an empy index, we will fill each index one at a time using a for loop
-  for(var i=0; i<password.length; i++){
+  //now with an empy index, we will fill each index one at a time using a while loop
+  var step = 0;
+  while(step != password.length){
     //a random number will be generated and assigned to a value that relates to a random array hosted in an if statement
-    var selector = Math.random()
+    var selector = Math.floor(Math.random() * 4)
+    console.log('this is iteration #' + step);
+    //if the statement passes the criteria (if the prompt is true && if the variable number matches) it will proceed to run the block of code
+    //each if statement will generate another random number that relates to a random index from said array
+    //that index will then be set to the index chosen in the password array.
+    var indexNum;
+    if(selector == 0 && promptLowerCase == true){
+        indexNum = Math.floor(Math.random() * lowerCase.length);
+        password[step] = (lowerCase[indexNum]);
+        step++;
+    }
+
+    if(selector == 1 && promptUpperCase == true){
+        indexNum = Math.floor(Math.random() * upperCase.length);
+        password[step] = (upperCase[indexNum]);
+        step++;
+    }
+
+    if(selector == 2 && promptSpecial == true){
+        indexNum = Math.floor(Math.random() * specialChar.length);
+        password[step] = (specialChar[indexNum]);
+        step++;
+    }
+
+    if(selector == 3 && promptNumbers == true){
+        indexNum = Math.floor(Math.random() * numbers.length);
+        password[step] = (numbers[indexNum]);
+        step++;
+    }
   }
 
-  //if the statement passes the criteria (if the prompt is true && if the variable number matches) it will proceed to run the block of code
-  //each if statement will generate another random number that relates to a random index from said array
-  //that indeex will then be set to the index chosen in the password array.
+  
 
 
 
 
-  console.log(password);
   let finalString  = password.join("");
   return finalString;
 }
