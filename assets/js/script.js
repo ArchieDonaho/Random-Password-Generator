@@ -38,7 +38,7 @@ function generatePassword() {
 
   //fills in the upperCase array using the lowerCase array
   for(var i=0; i<lowerCase.length; i++){
-    //.push copies all elements of lowerCase and puts them in upperCase
+    //.push copies the indexes of lowerCase and adds them the the upperCase indexes
     upperCase.push(lowerCase[i]);
     //.map uses the defined function to apply .toUpperCase to all indexes of uppercase
     upperCase = upperCase.map(
@@ -53,6 +53,21 @@ function generatePassword() {
   //converts promptLength into a number
   promptLength = parseInt(promptLength);
   console.log('the prompt length is ' + promptLength);
+
+   var checkPromptLength = function(length) {
+      if( !Number.isNaN(length) && !(length < 8 || length > 128) ){
+        // window.prompt('correct!');
+        return length;
+      } else {
+        window.alert('Please use a whole number between 8-128');
+        length = parseInt(window.prompt('How long will your password be? (8-128 characters)'));
+        checkPromptLength(length);
+      }
+   }
+   promptLength = checkPromptLength(promptLength);
+
+
+/*
   //sets variable for the while loop
   var istrue = true;
   //checks if promptLength is a number between 8 & 128. if not, it will prompt the user to re-enter the data
@@ -67,10 +82,13 @@ function generatePassword() {
       promptLength = parseInt(promptLength);
     }
   }
+*/
+
+
 
   //ask user if the password is going to be upper or lower case & if it will have special characters
-  var promptLowerCase = window.confirm('Does your password require lower-case? Click confirm if yes or cancel if no.');
-  var promptUpperCase = window.confirm('Does your password require upper-case? Click confirm if yes or cancel if no.');
+  var promptLowerCase = window.confirm('Does your password require lower-case letters? Click confirm if yes or cancel if no.');
+  var promptUpperCase = window.confirm('Does your password require upper-case letters? Click confirm if yes or cancel if no.');
   var promptSpecial = window.confirm('Does your password require special characters? Click confirm if yes or cancel if no.');
   var promptNumbers = window.confirm('Does your password require numbers? Click confirm if yes or cancel if no.');
 
@@ -87,6 +105,7 @@ function generatePassword() {
     //if the statement passes the criteria (if the prompt is true && if the variable number matches) it will proceed to run the block of code
     //each if statement will generate another random number that relates to a random index from said array
     //that index will then be set to the index chosen in the password array.
+    //the step counter only increases if the if-statement runs. If an if-statement doesnt run, the while loop will ty again to create a number taht relates to one of teh if-statements
     var indexNum;
     if(selector == 0 && promptLowerCase == true){
         indexNum = Math.floor(Math.random() * lowerCase.length);
@@ -112,12 +131,8 @@ function generatePassword() {
         step++;
     }
   }
-
-  
-
-
-
-
+  //now we have the password array filled
+  //convert the password array into one continuous string and return it to the function
   let finalString  = password.join("");
   return finalString;
 }
