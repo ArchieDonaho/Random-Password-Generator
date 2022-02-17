@@ -30,17 +30,20 @@ containing the selected criteria.
 
 //randomly generates the password based on the user-entered criteria
 function generatePassword() {
-  //checks prompt length
+  //checks prompt length. If length doesn't meet the criteria, it will prompt the user to enter a new length and re-run the loop to check again
   function checkPromptLength(length) {
-    if( !Number.isNaN(length) && length >= 8 && length <= 128 && typeof(length) != undefined ){
-      return length;
-    } else {
-      window.alert('Please use a whole number between 8-128');
-      length = Number(window.prompt('How long will your password be? (8-128 characters)'));
-      checkPromptLength(length);
+    for(var i=0; i<1; i){
+      if( Number.isNaN(length) || length < 8 || length > 128 || typeof(length) === undefined ){
+        window.alert('Please use a whole number between 8-128');
+        length = Number(window.prompt('How long will your password be? (8-128 characters)'));
+        console.log("imputed " + promptLength);
+      } else {
+        i = 1;
+      }
     }
+    return length;
   }
-  //function to obtain prompts & check if at least one was seleted
+  //function to obtain criteria & check if at least one was seleted. If none are selected, the function will re-run until at least 1 is selected
   function checkPromptCriteria(){
     promptLowerCase = window.confirm('Does your password require lower-case letters? Click confirm if yes or cancel if no.');
     promptUpperCase = window.confirm('Does your password require upper-case letters? Click confirm if yes or cancel if no.');
@@ -55,9 +58,9 @@ function generatePassword() {
   //fills the 'password' array
   function createPasswordArray(){
     for(var i = 0; i<password.length; i){
-      //a random number will be generated and assigned to 'selector' that will select a random array hosted in an if-else statement
+      //a random number between 0 and 3 will be generated and assigned to 'selector' 
       //each if statement checks if the 'selector' is true and if the prompt was approved or declined
-      //if approved, it will select a random index from their respective array and assign it to index 'i' in the 'password' array & increment 'i' to move on to the next index
+      //if both statements are true, it will select a random index from their respective array and assign it to index 'i' in the 'password' array & increment 'i' to move on to the next index
       //if none of the if statements are true, then 'i' will not increment and the for-loop will run again on the same password index
       var selector = Math.floor(Math.random() * 4)
       console.log('this is iteration #' + (i + 1));
@@ -76,30 +79,28 @@ function generatePassword() {
         i++;
       } else {}
     }
-    //lastly, we will check it using the 'checkPassword' function
+    //lastly, we will check it using the 'checkPassword' function to make sure that all criteria has been met
     checkPassword();
   }
   //checks the 'password' to see if all criteria is met
   function checkPassword(){
-    // debugger;
-    //we will obtain the index from the 'password' array, and check if any selected value is found in any of the 4 arrays
-    //if it finds a match, it will move on to the next index and repeat the process
-    //if it does not find a match in any of the criteria's indexes, it will re-run 'createPasswordArray'
+    //we will take the 'password' array and compare all of it's index values against any approved criterias (lower case, upper case, special char, numbers)
+    //if it does not find a match in any of the array's indexes, it will re-run 'createPasswordArray'
     //this process will repeat until a 'password' array is produced containing all pre-selected criteria.
     if( !(password.some(item => lowerCase.includes(item))) && promptLowerCase ){
-      console.log("there is no lower case, rerunning creatPasswordArray");
+      console.log("there are no lower case characters, rerunning creatPasswordArray");
       createPasswordArray();
     }
     if( !(password.some(item => upperCase.includes(item))) && promptUpperCase ){
-      console.log("there is no upper case, rerunning creatPasswordArray");
+      console.log("there are no upper case characters, rerunning creatPasswordArray");
       createPasswordArray();
     }
     if( !(password.some(item => specialChar.includes(item))) && promptSpecial ){
-      console.log("there is no special characters, rerunning creatPasswordArray");
+      console.log("there are no special characters, rerunning creatPasswordArray");
       createPasswordArray();
     }
     if( !(password.some(item => numbers.includes(item))) && promptNumbers ){
-      console.log("there is no numbers, rerunning creatPasswordArray");
+      console.log("there are no numerical characters, rerunning creatPasswordArray");
       createPasswordArray();
     }
   }
@@ -119,12 +120,12 @@ function generatePassword() {
   var promptLength = window.prompt('How long will your password be? (8-128 characters)');
   console.log("imputed " + promptLength)
 
-  //converts 'promptLength' into an integer
+  //converts 'promptLength' from a string into an integer
   promptLength = Number(promptLength);
-  console.log("the selected promptLength is " + promptLength);
   
   //checks if 'promptLength' is a number between 8 & 128. if not, it will prompt the user to re-enter the data
   promptLength = checkPromptLength(promptLength);
+  console.log("the selected promptLength is " + promptLength);
 
   //ask user if the password is going to be upper or lower case & if it will have special characters
   checkPromptCriteria();
